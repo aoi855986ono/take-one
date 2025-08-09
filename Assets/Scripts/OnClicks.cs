@@ -13,4 +13,14 @@ public class OnClicks : MonoBehaviour
     {
         SceneManager.LoadScene("InGameScene");
     }
+
+    public void OnReturnTitle()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+
+    public void PlayMoive()
+    {
+        
+    }
 }
