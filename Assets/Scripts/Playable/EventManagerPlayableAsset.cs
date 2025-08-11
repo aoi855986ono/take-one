@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class EventManagerPlayableAsset : PlayableAsset
     public override Playable CreatePlayable(PlayableGraph graph, GameObject go)
     {
         EventManagerPlayableBehaviour eventManagerPlayableBehaiour = new EventManagerPlayableBehaviour();
+
+        eventManagerPlayableBehaiour.AccidentEvents = _accidentEvents;
         return ScriptPlayable<EventManagerPlayableBehaviour>.Create(graph, eventManagerPlayableBehaiour);
     }
 }
