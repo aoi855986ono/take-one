@@ -24,7 +24,7 @@ public class EventManagerPlayableBehaviour : PlayableBehaviour
         //出目に該当するアクシデントを検索する。
         int index = _accidentEventsRate.FindIndex(rate => dice <= rate);
         AccidentEvent decideAccidentEvent = AccidentEvents[index];
-        Debug.Log($"ダイスの目{dice}によって選ばれたアクシデントは{decideAccidentEvent.name}（{_accidentEventsRate[index]}）");
+        // Debug.Log($"ダイスの目{dice}によって選ばれたアクシデントは{decideAccidentEvent.name}（{_accidentEventsRate[index]}）");
     }
 
     // Called when the owning graph stops playing 所有するグラフが再生を停止したときに呼び出される

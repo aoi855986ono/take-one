@@ -9,10 +9,10 @@ public class Manager : MonoBehaviour
     [Header("ゲームの基本情報")]
     [SerializeField] int currentIndex;
     [SerializeField] int[] moviesIndex;
-    [SerializeField] float[] moviesScore;
+    [SerializeField] float[][] moviesScore; //Index/History 多分、Stackが良いだろう
     public int CurrentIndex { get; set; }
     public int[] MoviesIndex { get; set; }
-    public float[] MoviesScore { get; set; }
+    public float[][] MoviesScore { get; set; }
     private void Awake()
     {
         CurrentIndex = CurrentIndex;
