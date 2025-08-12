@@ -51,6 +51,4 @@ public class InGameManager : MonoBehaviour
         //これが録画停止処理
         _recorderController.StopRecording();
     }
-
-
 }

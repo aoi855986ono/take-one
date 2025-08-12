@@ -1,30 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System;
 using UnityEngine;
 using UnityEngine.Playables;
 
 // A behaviour that is attached to a playable
 public class EventManagerPlayableBehaviour : PlayableBehaviour
 {
-    public AccidentEvent[] AccidentEvents;//
+    public AccidentEvent[] AccidentEvents;
     List<int> _accidentEventsRate = new List<int>();
+    
+    CinematographyLogComponent _cinematographyLogComponent;
+    
     // Called when the owning graph starts playing 所有するグラフが再生を開始したときに呼び出される
     public override void OnGraphStart(Playable playable)
     {
-        //サイコロを振って決められるようにアクシデントの中にある確率の値を調整する。サイコロの最大値を決定する。
-        int diceMaxNunber = 0;
-        foreach (var accidentEvent in AccidentEvents)
-        {
-            diceMaxNunber += accidentEvent.Rate;
-            _accidentEventsRate.Add(diceMaxNunber);
-        }
-        //サイコロを振って出目を確定。
-        int dice = Random.Range(1, diceMaxNunber + 1);
-        //出目に該当するアクシデントを検索する。
-        int index = _accidentEventsRate.FindIndex(rate => dice <= rate);
-        AccidentEvent decideAccidentEvent = AccidentEvents[index];
-        // Debug.Log($"ダイスの目{dice}によって選ばれたアクシデントは{decideAccidentEvent.name}（{_accidentEventsRate[index]}）");
+        DesideAccident(); //①
+        CinematographyLog(); //②
     }
 
     // Called when the owning graph stops playing 所有するグラフが再生を停止したときに呼び出される
@@ -49,5 +41,34 @@ public class EventManagerPlayableBehaviour : PlayableBehaviour
     public override void PrepareFrame(Playable playable, FrameData info)
     {
         
+    }
+    /// <summary>
+    /// ① サイコロをふってアクシデントを決定する
+    /// </summary>
+    void DesideAccident()
+    {
+        //サイコロを振って決められるようにアクシデントの中にある確率の値を調整する。サイコロの最大値を決定する。
+        int diceMaxNunber = 0;
+        foreach (var accidentEvent in AccidentEvents)
+        {
+            diceMaxNunber += accidentEvent.Rate;
+            _accidentEventsRate.Add(diceMaxNunber);
+        }
+        //サイコロを振って出目を確定。
+        int dice = UnityEngine.Random.Range(1, diceMaxNunber + 1);
+        //出目に該当するアクシデントを検索する。
+        int index = _accidentEventsRate.FindIndex(rate => dice <= rate);
+        AccidentEvent decideAccidentEvent = AccidentEvents[index];
+        Debug.Log($"ダイスの目{dice}によって選ばれたアクシデントは{decideAccidentEvent.name}（{_accidentEventsRate[index]}）");
+    }
+    /// <summary>
+    /// ②　CinematographyLogの内容を更新する
+    /// </summary>
+    void CinematographyLog() //デリゲートで呼び出したいな…… → Interfaceを実装するなら → 同じInterfaceを実装させて、その中の関数を発動させれば良いのか？？ → Logの方に受信メソッドを書き、Log.受信メソッド をこのクラスに登録させれば良い → この登録がそもそもめんどい → new Class名でインスタンスさせればよいか → イケそう
+    {
+        _cinematographyLogComponent = GameObject.Find("(I)CinematographyLog").GetComponent<CinematographyLogComponent>();
+        string[] texts = new string[]{"hoge"};
+        //ここでAccidentEventの情報を渡せるようにしたい
+        _cinematographyLogComponent.UpdateCinematographyLog(texts);
     }
 }
