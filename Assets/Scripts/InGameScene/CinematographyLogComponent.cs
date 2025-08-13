@@ -13,7 +13,10 @@ public class CinematographyLogComponent : MonoBehaviour
     {
         _cinematographyLogObject = gameObject;
     }
-
+    /// <summary>
+    /// β EventManagerPlayableBehaviour から受け取った文字列を CinematographyLog に表示する
+    /// </summary>
+    /// <param name="logTexts"></param>
     public void UpdateCinematographyLog(string[] logTexts)
     {
         //CinematographyLogPrefabを生成する

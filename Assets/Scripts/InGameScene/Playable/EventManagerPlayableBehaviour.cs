@@ -8,6 +8,7 @@ using UnityEngine.Playables;
 public class EventManagerPlayableBehaviour : PlayableBehaviour
 {
     public AccidentEvent[] AccidentEvents;
+    AccidentEvent _currentAccidentEvent;
     List<int> _accidentEventsRate = new List<int>();
     
     CinematographyLogComponent _cinematographyLogComponent;
@@ -58,17 +59,17 @@ public class EventManagerPlayableBehaviour : PlayableBehaviour
         int dice = UnityEngine.Random.Range(1, diceMaxNunber + 1);
         //出目に該当するアクシデントを検索する。
         int index = _accidentEventsRate.FindIndex(rate => dice <= rate);
-        AccidentEvent decideAccidentEvent = AccidentEvents[index];
-        Debug.Log($"ダイスの目{dice}によって選ばれたアクシデントは{decideAccidentEvent.name}（{_accidentEventsRate[index]}）");
+        _currentAccidentEvent = AccidentEvents[index];
+        Debug.Log($"ダイスの目{dice}によって選ばれたアクシデントは{_currentAccidentEvent.name}（{_accidentEventsRate[index]}）");
     }
     /// <summary>
     /// ②　CinematographyLogの内容を更新する
     /// </summary>
-    void CinematographyLog() //デリゲートで呼び出したいな…… → Interfaceを実装するなら → 同じInterfaceを実装させて、その中の関数を発動させれば良いのか？？ → Logの方に受信メソッドを書き、Log.受信メソッド をこのクラスに登録させれば良い → この登録がそもそもめんどい → new Class名でインスタンスさせればよいか → イケそう
+    void CinematographyLog()
     {
         _cinematographyLogComponent = GameObject.Find("(I)CinematographyLog").GetComponent<CinematographyLogComponent>();
-        string[] texts = new string[]{"hoge"};
-        //ここでAccidentEventの情報を渡せるようにしたい
-        _cinematographyLogComponent.UpdateCinematographyLog(texts);
+        string[] texts = new string[] { "hoge" };
+        // string[] texts = new string[]{$"{_currentAccidentEvent.GenerateTime.ToString()}{_currentAccidentEvent.ToDo}{_currentAccidentEvent.NPCName}{_currentAccidentEvent.Solution}"};
+        _cinematographyLogComponent.UpdateCinematographyLog(texts); //α → β
     }
 }
